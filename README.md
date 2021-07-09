@@ -12,7 +12,7 @@ jobs:
         runs-on: [self-hosted, ...]
         steps:
             - id: deploy-cops
-              uses: olxbr/deploy-cops-action@v1
+              uses: olxbr/deploy-cops-action@v2
               with:
                 # We suggest adding COPS url as repository secret
                 url: ${{ secrets.COPS_URL }}
