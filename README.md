@@ -1,4 +1,5 @@
 # deploy-cops-action
+
 Action to deploy application on COPS.
 
 ## Usage
@@ -17,6 +18,8 @@ jobs:
                 url: ${{ secrets.COPS_URL }}
                 # You can use the image from some other action output or something else
                 image: ${{ needs.build-n-push-docker-img.outputs.image }}
+                # Tolerance in seconds to wait the deploy to be successfull
+                timeout_in_seconds: 600
 
             - ... other steps
 ```

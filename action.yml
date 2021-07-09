@@ -8,11 +8,13 @@ inputs:
   image:
     description: 'Full image path with version'
     required: true
+  timeout_in_seconds:
+    description: 'Max timeout to wait deploy to finish'
+    default: 600
 runs:
-  using: 'composite'
-  steps:
-    - run: ${{ github.action_path }}/entrypoint.sh
-      shell: bash
-      env:
-        URL: ${{ inputs.url }}
-        IMAGE: ${{ inputs.image }}
+  using: 'docker'
+  image: Dockerfile
+  args:
+    - ${{ inputs.image }}
+    - ${{ inputs.url }}
+    - ${{ inputs.timeout_in_seconds }}
