@@ -32,9 +32,10 @@ function deploy() {
             _log info "Valid response from COPS status_code:[${CURL_RESPONSE}]"
          else
             _log erro "INVALID response from COPS status_code:[${CURL_RESPONSE}]"
-            _log erro "Maybe a problem with COPS or REPOSITORY. Body Response:[$(cat ${CURL_BODY_FILE})]"
+            _log erro "Maybe a problem with COPS or REPOSITORY"
             RET_DEPLOY=1
         fi
+        _log info "Response body was [$(cat ${CURL_BODY_FILE})]"
     else
         _log erro "Can't execute CURL to deploy image ${IMAGE} to COPS [$URL]"
         RET_DEPLOY=1
