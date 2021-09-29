@@ -28,7 +28,7 @@ function deploy() {
     CURL_BODY_FILE=$(mktemp)
     _log info "Deploying $IMAGE image to COPS $URL..."
     if CURL_RESPONSE=$(curl -v -X PATCH -H 'Content-Type: application/json' --url "$URL" -d "{\"image\": \"$IMAGE\"}" --write-out '%{http_code}' -o ${CURL_BODY_FILE}); then
-        if grep -q '2..' <<< ${CURL_RESPONSE};
+        if grep -q '2..' <<< ${CURL_RESPONSE}; then
             _log info "Valid response from COPS status_code:[${CURL_RESPONSE}]"
          else
             _log erro "INVALID response from COPS status_code:[${CURL_RESPONSE}]"
