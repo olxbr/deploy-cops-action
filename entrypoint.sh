@@ -43,6 +43,7 @@ function deploy() {
         ((RET_DEPLOY>0)) &&
         _log erro "Execution finished with error" &&
         exit 1
+    _log info "Continue execution..."
 }
 
 function wait() {
