@@ -27,8 +27,8 @@ function deploy() {
     RET_DEPLOY=0
     CURL_BODY_FILE=$(mktemp)
     _log info "Deploying $IMAGE image to COPS $URL..."
-    if CURL_RESPONSE=$(curl -v -s -X PATCH -H 'Content-Type: application/json' --url "$URL" -d "{\"image\": \"$IMAGE\"}" --write-out '%{http_code}' -o ${CURL_BODY_FILE}); then
-        if grep -q '2..' <<< ${CURL_RESPONSE}; then
+    if CURL_RESPONSE=$(curl -v -s -X PATCH -H 'Content-Type: application/json' --url "$URL" -d "{\"image\": \"$IMAGE\"}" --write-out '%{http_code}' -o ${CURL_BODY_FILE} 2> >(grep -v '* Expire in' 1>&2)); then
+        if grep -q '^2..' <<< ${CURL_RESPONSE}; then
             _log info "Valid response from COPS status_code:[${CURL_RESPONSE}]"
          else
             _log erro "INVALID response from COPS status_code:[${CURL_RESPONSE}]"
@@ -53,6 +53,11 @@ function wait() {
         python /wait.py $IMAGE $URL $TIMEOUT
 }
 
+## MAIN
+if (($#<3)); then
+  _log erro "Missing parameters. Expected [3] found [$#]"
+  exit 1
+fi
 deploy && wait
 
 
