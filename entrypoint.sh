@@ -30,7 +30,12 @@ function deploy() {
     if CURL_RESPONSE=$(curl -v -s -X PATCH -H 'Content-Type: application/json' --url "$URL" -d "{\"image\": \"$IMAGE\"}" --write-out '%{http_code}' -o ${CURL_BODY_FILE} 2> >(grep -v '* Expire in' 1>&2)); then
         if grep -q '^2..' <<< ${CURL_RESPONSE}; then
             _log info "Valid response from COPS status_code:[${CURL_RESPONSE}]"
-         else
+        elif grep -q '^4..' <<< ${CURL_RESPONSE}; then
+            _log erro "INVALID response from COPS status_code:[${CURL_RESPONSE}]" 
+            _log info "This could be a problem with COPS or the image registry"
+            _log info "Please, verify if the image exists in the registry, and if the COPS app with that id exists"
+            RET_DEPLOY=1
+        else
             _log erro "INVALID response from COPS status_code:[${CURL_RESPONSE}]"
             _log erro "Maybe a problem with COPS or REPOSITORY"
             RET_DEPLOY=1
