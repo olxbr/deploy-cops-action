@@ -31,13 +31,13 @@ function deploy() {
         if grep -q '^2..' <<< ${CURL_RESPONSE}; then
             _log info "Valid response from COPS status_code:[${CURL_RESPONSE}]"
         elif grep -q '^4..' <<< ${CURL_RESPONSE}; then
-            _log erro "INVALID response from COPS status_code:[${CURL_RESPONSE}]" 
-            _log info "This could be a problem with COPS or the image registry"
-            _log info "Please, verify if the image exists in the registry, and if the COPS app with that id exists"
+            _log warn "INVALID response from COPS status_code:[${CURL_RESPONSE}]" 
+            _log warn "This could be a problem with COPS or the image registry"
+            _log warn "Please, verify if the image exists in the registry, and if the COPS app with that id exists"
             RET_DEPLOY=1
         else
-            _log warn "INVALID response from COPS status_code:[${CURL_RESPONSE}]"
-            _log warn "Maybe a problem with COPS or REPOSITORY"
+            _log erro "INVALID response from COPS status_code:[${CURL_RESPONSE}]"
+            _log erro "Maybe a problem with COPS or REPOSITORY"
             RET_DEPLOY=1
         fi
         _log info "Response body was [$(cat ${CURL_BODY_FILE})]"
