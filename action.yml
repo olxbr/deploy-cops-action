@@ -12,9 +12,15 @@ inputs:
     description: 'Max timeout to wait deploy to finish'
     default: 600
 runs:
-  using: 'docker'
-  image: Dockerfile
-  args:
-    - ${{ inputs.image }}
-    - ${{ inputs.url }}
-    - ${{ inputs.timeout_in_seconds }}
+  using: 'composite'
+  steps:
+    - uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+    - run: ${{ github.action_path }}/entrypoint.sh
+      shell: bash
+      env:
+        IMAGE: ${{ inputs.image }}
+        TIMEOUT: ${{ inputs.timeout_in_seconds }}
+        URL: ${{ inputs.url }}
+        WAIT_PATH: ${{ github.action_path }}
