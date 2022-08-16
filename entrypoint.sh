@@ -59,10 +59,10 @@ function wait() {
 }
 
 ## MAIN
-if (($#<3)); then
-  _log erro "Missing parameters. Expected [3] found [$#]"
-  exit 1
-fi
+# if (($#<3)); then
+#   _log erro "Missing parameters. Expected [3] found [$#]"
+#   exit 1
+# fi
 
 # Check if cops API URL is on format: <domain>/v1/apps/<uuid-namespace>
 if [[ ${URL//-/} =~ /v1/apps/[[:xdigit:]]{32} ]];
