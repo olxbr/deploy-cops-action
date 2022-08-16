@@ -23,4 +23,4 @@ runs:
         IMAGE: ${{ inputs.image }}
         TIMEOUT: ${{ inputs.timeout_in_seconds }}
         URL: ${{ inputs.url }}
-        PYTHONPATH: ${{ github.action_path }}
+        WAIT_PATH: ${{ github.action_path }}

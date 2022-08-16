@@ -50,7 +50,7 @@ function deploy() {
 
 function wait() {
     _log info "Waiting $IMAGE to finish deploy in $URL..."
-    pip install requests==2.25.1 && python wait.py $IMAGE $URL $TIMEOUT
+    pip install requests==2.25.1 && python $WAIT_PATH/wait.py $IMAGE $URL $TIMEOUT
 }
 
 ## MAIN
