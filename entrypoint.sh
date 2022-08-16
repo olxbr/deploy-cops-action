@@ -53,17 +53,12 @@ function wait() {
     pip install requests==2.25.1 && python $WAIT_PATH/wait.py $IMAGE $URL $TIMEOUT
 }
 
-## MAIN
-# if (($#<3)); then
-#   _log erro "Missing parameters. Expected [3] found [$#]"
-#   exit 1
-# fi
-
 # Check if cops API URL is on format: <domain>/v1/apps/<uuid-namespace>
 if [[ ${URL//-/} =~ /v1/apps/[[:xdigit:]]{32} ]];
   then _log info "COPS API URL [${URL}] is valid with expected format [https?://<domain>/v1/apps/<uuid-namespace>]"
   else _log erro "COPS API URL [${URL}] is NOT valid with expected format [https?://<domain>/v1/apps/<uuid-namespace>]" && exit 1
 fi
+
 deploy && wait
 
 
