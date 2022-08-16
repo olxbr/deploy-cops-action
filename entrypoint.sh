@@ -2,10 +2,6 @@
 
 set -e
 
-echo "IMAGE: $IMAGE"
-echo "TIMEOUT: $TIMEOUT"
-echo "URL: $URL"
-
 ## Colors
 ESC_SEQ="\x1b["
 C_RESET=$ESC_SEQ"39;49;00m"
@@ -54,8 +50,7 @@ function deploy() {
 
 function wait() {
     _log info "Waiting $IMAGE to finish deploy in $URL..."
-    pip install requests==2.25.1 && \
-        python wait.py $IMAGE $URL $TIMEOUT
+    pip install requests==2.25.1 && python wait.py $IMAGE $URL $TIMEOUT
 }
 
 ## MAIN
