@@ -2,10 +2,6 @@
 
 set -e
 
-IMAGE=$1
-URL=$2
-TIMEOUT=$3
-
 ## Colors
 ESC_SEQ="\x1b["
 C_RESET=$ESC_SEQ"39;49;00m"
