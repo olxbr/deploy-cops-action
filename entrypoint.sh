@@ -2,9 +2,9 @@
 
 set -e
 
-print("IMAGE: $IMAGE")
-print("TIMEOUT: $TIMEOUT")
-print("URL: $URL")
+echo "IMAGE: $IMAGE"
+echo "TIMEOUT: $TIMEOUT"
+echo "URL: $URL"
 
 ## Colors
 ESC_SEQ="\x1b["
