@@ -59,6 +59,19 @@ if [[ ${URL//-/} =~ /v1/apps/[[:xdigit:]]{32} ]];
   else _log erro "COPS API URL [${URL}] is NOT valid with expected format [https?://<domain>/v1/apps/<uuid-namespace>]" && exit 1
 fi
 
+# If docker is authenticated, check image before
+DOMAIN=$(cut -d/ -f1 <<< $IMAGE)
+_log info "Checking if docker is authenticated on domain $DOMAIN..."
+
+if grep -q $DOMAIN ~/.docker/config.json; then
+  _log info "Checking if image [$IMAGE] exits..."
+  docker manifest inspect $IMAGE > /dev/null 2>&1 &&
+    _log info "Image [$IMAGE] FOUND. Proceed to deploy..." ||
+    _log erro "Image [$IMAGE] NOT FOUND on Registry. Check if image has been pushed to registry."
+else
+  _log warn "Domain [$DOMAIN] is not authenticated. Skipping process to check if image exists on Registry."
+fi
+
 deploy && wait
 
 
