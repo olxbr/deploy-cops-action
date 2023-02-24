@@ -70,19 +70,19 @@ if [[ $BASIC_TOKEN != null ]]; then
     status_code=$(curl -s -H "Authorization: Basic $BASIC_TOKEN" --write-out '%{http_code}' -o /dev/null https://$DOMAIN/v2/_catalog)
 
     if [[ $status_code == 200 ]]; then
-        _log info "Token is valid. Checking if image [$IMAGE] exits..."
+        _log info "Auth token is valid. Checking if image [$IMAGE] exits..."
 
         if docker manifest inspect $IMAGE > /dev/null 2>&1; then
-            _log info "Image [$IMAGE] FOUND. Proceed to deploy..."
+            _log info "Image FOUND on registry [$IMAGE]. Proceed to deploy..."
         else
-            _log erro "Image [$IMAGE] NOT FOUND on Registry. Check if image has been pushed to registry."
+            _log erro "Image NOT FOUND on registry [$IMAGE]. Check if image has been pushed to registry."
             exit 1
         fi
     else
-        _log warn "Auth token has expired. Unable to check image on registry [$DOMAIN]"
+        _log warn "Auth token has expired. Unable to check image on registry [$DOMAIN]."
     fi
 else
-    _log warn "Auth token not found on config file for domain [$DOMAIN]. Skipping process to check if image exists on Registry."
+    _log warn "Auth token not found on config file for domain [$DOMAIN]. Skipping process to check if image exists on registry."
 fi
 
 deploy && wait
