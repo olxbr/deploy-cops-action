@@ -70,7 +70,7 @@ if [[ $BASIC_TOKEN != null ]]; then
     status_code=$(curl -s -H "Authorization: Basic $BASIC_TOKEN" --write-out '%{http_code}' -o /dev/null https://$DOMAIN/v2/_catalog)
 
     if [[ $status_code == 200 ]]; then
-        _log info "Auth token is valid. Checking if image [$IMAGE] exits..."
+        _log info "Auth token is valid. Checking if image exits [$IMAGE] ..."
 
         if docker manifest inspect $IMAGE > /dev/null 2>&1; then
             _log info "Image FOUND on registry [$IMAGE]. Proceed to deploy..."
