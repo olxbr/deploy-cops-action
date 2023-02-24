@@ -61,23 +61,19 @@ fi
 
 # If docker is authenticated, check image before
 DOMAIN=$(cut -d/ -f1 <<< $IMAGE)
-_log info "Checking if docker is authenticated on domain $DOMAIN..."
 
+_log info "Checking if docker is authenticated on domain $DOMAIN..."
 BASIC_TOKEN=$(jq -r ".auths.\"$DOMAIN\".auth" ~/.docker/config.json 2> /dev/null || echo null)
 
 if [[ $BASIC_TOKEN != null ]]; then
-
     status_code=$(curl -s -H "Authorization: Basic $BASIC_TOKEN" --write-out '%{http_code}' -o /dev/null https://$DOMAIN/v2/_catalog)
-
     if [[ $status_code == 200 ]]; then
         _log info "Auth token is valid. Checking if image exits [$IMAGE] ..."
 
-        if docker manifest inspect $IMAGE > /dev/null 2>&1; then
-            _log info "Image FOUND on registry [$IMAGE]. Proceed to deploy..."
-        else
-            _log erro "Image NOT FOUND on registry [$IMAGE]. Check if image has been pushed to registry."
-            exit 1
-        fi
+        docker manifest inspect $IMAGE > /dev/null 2>&1 &&
+            _log info "Image FOUND on registry [$IMAGE]. Proceed to deploy..." ||
+            (_log erro "Image NOT FOUND on registry [$IMAGE]. Check if image has been pushed to registry."; exit 1)
+
     else
         _log warn "Auth token has expired. Unable to check image on registry [$DOMAIN]."
     fi
