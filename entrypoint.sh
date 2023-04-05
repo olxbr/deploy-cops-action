@@ -59,6 +59,11 @@ if [[ ${URL//-/} =~ /v1/apps/[[:xdigit:]]{32} ]];
   else _log erro "COPS API URL [${URL}] is NOT valid with expected format [https?://<domain>/v1/apps/<uuid-namespace>]" && exit 1
 fi
 
+# Check timeout before start
+(($TIMEOUT > 3600)) &&
+    _log erro "Timeout can NOT be more than 1h [$TIMEOUT seconds]" &&
+    exit 1 || true
+
 # If docker is authenticated, check image before
 DOMAIN=$(cut -d/ -f1 <<< $IMAGE)
 
