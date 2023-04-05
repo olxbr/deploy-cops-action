@@ -19,6 +19,7 @@ def get_images_by_instance(api_prefix, instance_uuid, correct_image):
     response = requests.get(f"{api_prefix}/instances/{instance_uuid}/containers",
                             headers={"accept": "application/json"})
     result = json.loads(response.content)
+    spent = datetime.timestamp(datetime.now()) - before
     images = []
     for r in result:
         for c in r["containers"]:
@@ -26,7 +27,7 @@ def get_images_by_instance(api_prefix, instance_uuid, correct_image):
             if c["image"] == correct_image:
                 print(f" - Ready: {c['ready']}", flush=True)
                 print(status, flush=True)
-                if "BackOff" in c["status"]:
+                if "BackOff" in c["status"]["reason"] and spent > 60:
                     print(f"ERRO - Found any type of 'BackOff' on deploy. Check the logs on COPS interface.", flush=True)
                     sys.exit(1)
             if c["ready"]:
@@ -56,8 +57,6 @@ def wait_deploy_finished(api_prefix, app_uuid, correct_image, timeout):
             traceback.print_exc()
         time.sleep(5)
         spent = datetime.timestamp(datetime.now()) - before
-        print(before)
-        print(spent)
         if spent > timeout:
             raise TimeoutError(
                 f"Waited too much app {app_uuid} to update to {correct_image}")
