@@ -70,7 +70,7 @@ if __name__ == "__main__":
         print("Needs three parameters: wait.py [image] [url] [timeout]")
         sys.exit(1)
 
-    correct_image = sys.argv[1]
+    global correct_image = sys.argv[1]
     cops_url = sys.argv[2]
     timeout = int(sys.argv[3])
 
