@@ -24,10 +24,10 @@ def get_images_by_instance(api_prefix, instance_uuid, correct_image):
     for r in result:
         for c in r["containers"]:
             status = json.dumps(c['status'], indent=2)
-            status = status.replace('\"','').replace('  ',' - ').replace('{','=== STATUS ===')[:-1]
+            status = status.replace('\"','').replace('  ',' - ').replace('{',' === STATUS ===')[:-1]
             if c["image"] == correct_image:
                 print(status, flush=True)
-                if "BackOff" in c["status"]["reason"] and spent > 60:
+                if c.get("status").get("reason") is not None and "BackOff" in c["status"]["reason"] and spent > 60:
                     print(f"ERRO - Found any type of 'BackOff' on deploy. Check the logs on COPS interface.", flush=True)
                     sys.exit(1)
             if c["ready"]:
