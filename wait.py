@@ -29,7 +29,7 @@ def get_images_by_instance(api_prefix, instance_uuid):
                 if "BackOff" in c["status"]:
                     print(f"ERRO - Found any type of 'BackOff' on deploy. Check the logs on COPS interface.", flush=True)
                     sys.exit(1)
-            else
+            else:
                 print(f"OLD image {c['image']} is {status}", flush=True)
             if c["ready"]:
                 images.append(c["image"])
