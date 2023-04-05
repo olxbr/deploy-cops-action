@@ -22,7 +22,7 @@ def get_images_by_instance(api_prefix, instance_uuid, correct_image):
     for r in result:
         for c in r["containers"]:
             status=json.dumps(c['status'], indent=2).replace('\"','')
-            if c["image"] is correct_image:
+            if c["image"] == correct_image:
                 print(f"Status of image {c['image']}:", flush=True)
                 print(f" - Ready: {c['ready']}", flush=True)
                 print(f" - Status: {status}", flush=True)
