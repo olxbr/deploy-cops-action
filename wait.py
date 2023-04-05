@@ -19,6 +19,7 @@ def get_images_by_instance(api_prefix, instance_uuid):
                             headers={"accept": "application/json"})
     result = json.loads(response.content)
     images = []
+    global correct_image
     for r in result:
         for c in r["containers"]:
             status=json.dumps(c['status'], indent=2).replace('\"','')
