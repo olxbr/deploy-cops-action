@@ -14,12 +14,11 @@ def get_instances(api_prefix, app_uuid):
     return [i["uuid"] for i in result["instances"]]
 
 
-def get_images_by_instance(api_prefix, instance_uuid):
+def get_images_by_instance(api_prefix, instance_uuid, correct_image):
     response = requests.get(f"{api_prefix}/instances/{instance_uuid}/containers",
                             headers={"accept": "application/json"})
     result = json.loads(response.content)
     images = []
-    global correct_image
     for r in result:
         for c in r["containers"]:
             status=json.dumps(c['status'], indent=2).replace('\"','')
@@ -37,15 +36,15 @@ def get_images_by_instance(api_prefix, instance_uuid):
     return images
 
 
-def get_images_by_app(api_prefix, app_uuid):
+def get_images_by_app(api_prefix, app_uuid, correct_image):
     result = []
     for instance_uuid in get_instances(api_prefix, app_uuid):
-        result += get_images_by_instance(api_prefix, instance_uuid)
+        result += get_images_by_instance(api_prefix, instance_uuid, correct_image)
     return result
 
 
 def deploy_finished(api_prefix, app_id, correct_image):
-    images = get_images_by_app(api_prefix, app_id)
+    images = get_images_by_app(api_prefix, app_id, correct_image)
     counted = Counter(images)
     return len(counted) == 1 and counted.get(correct_image) is not None
 
@@ -70,7 +69,7 @@ if __name__ == "__main__":
         print("Needs three parameters: wait.py [image] [url] [timeout]")
         sys.exit(1)
 
-    global correct_image = sys.argv[1]
+    correct_image = sys.argv[1]
     cops_url = sys.argv[2]
     timeout = int(sys.argv[3])
 
