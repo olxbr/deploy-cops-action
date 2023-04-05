@@ -6,6 +6,7 @@ import time
 import traceback
 from datetime import datetime
 
+before = datetime.timestamp(datetime.now())
 
 def get_instances(api_prefix, app_uuid):
     response = requests.get(f"{api_prefix}/apps/{app_uuid}",
@@ -23,7 +24,6 @@ def get_images_by_instance(api_prefix, instance_uuid, correct_image):
         for c in r["containers"]:
             status=json.dumps(c['status'], indent=2).replace('\"','')
             if c["image"] == correct_image:
-                print(f"Status of image {c['image']}:", flush=True)
                 print(f" - Ready: {c['ready']}", flush=True)
                 print(status, flush=True)
                 if "BackOff" in c["status"]:
@@ -48,7 +48,6 @@ def deploy_finished(api_prefix, app_id, correct_image):
 
 
 def wait_deploy_finished(api_prefix, app_uuid, correct_image, timeout):
-    before = datetime.timestamp(datetime.now())
     while True:
         try:
             if deploy_finished(api_prefix, app_uuid, correct_image):
@@ -57,6 +56,8 @@ def wait_deploy_finished(api_prefix, app_uuid, correct_image, timeout):
             traceback.print_exc()
         time.sleep(5)
         spent = datetime.timestamp(datetime.now()) - before
+        print before
+        print spent
         if spent > timeout:
             raise TimeoutError(
                 f"Waited too much app {app_uuid} to update to {correct_image}")
