@@ -28,7 +28,7 @@ def get_images_by_instance(api_prefix, instance_uuid, correct_image):
             if c["image"] == correct_image:
                 print(status, flush=True)
                 if c.get("status").get("reason") is not None and "BackOff" in c["status"]["reason"] and spent > 60:
-                    print(f"ERRO - Found any type of 'BackOff' on deploy. Check the logs on COPS interface.", flush=True)
+                    print(f"ERROR - Found any type of 'BackOff' on deploy. Check the logs on COPS interface.", flush=True)
                     sys.exit(1)
             if c["ready"]:
                 images.append(c["image"])
