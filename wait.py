@@ -56,8 +56,8 @@ def wait_deploy_finished(api_prefix, app_uuid, correct_image, timeout):
             traceback.print_exc()
         time.sleep(5)
         spent = datetime.timestamp(datetime.now()) - before
-        print before
-        print spent
+        print(before)
+        print(spent)
         if spent > timeout:
             raise TimeoutError(
                 f"Waited too much app {app_uuid} to update to {correct_image}")
