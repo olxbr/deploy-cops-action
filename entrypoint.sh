@@ -59,7 +59,7 @@ uuid_pattern="[[:xdigit:]]{32}"
 if [[ ${URL//-/} =~ \/v1\/apps\/$uuid_pattern$ ]]; then 
     _log info "COPS API URL [${URL}] is valid with expected format [http?://<domain>/v1/apps/<uuid>]"
 elif [[ ${URL//-/} =~ \/v1\/schedulers\/$uuid_pattern\/deploy$ ]]; then
-    _log erro "COPS API URL [${URL}] is valid with expected format [http?://<domain>/v1/schedulers/<uuid>/deploy]"
+    _log info "COPS API URL [${URL}] is valid with expected format [http?://<domain>/v1/schedulers/<uuid>/deploy]"
 else
     _log erro "COPS API URL [${URL}] is NOT valid with expected format [http?://<domain>/v1/apps/<uuid>] or [http?://<domain>/v1/schedulers/<uuid>/deploy]" && exit 1
 fi
