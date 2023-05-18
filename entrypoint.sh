@@ -53,10 +53,15 @@ function wait() {
     pip install requests==2.25.1 && python $WAIT_PATH/wait.py $IMAGE $URL $TIMEOUT
 }
 
-# Check if cops API URL is on format: <domain>/v1/apps/<uuid-namespace>
-if [[ ${URL//-/} =~ /v1/apps/[[:xdigit:]]{32} ]];
-  then _log info "COPS API URL [${URL}] is valid with expected format [https?://<domain>/v1/apps/<uuid-namespace>]"
-  else _log erro "COPS API URL [${URL}] is NOT valid with expected format [https?://<domain>/v1/apps/<uuid-namespace>]" && exit 1
+
+# Check if cops API URL is on format: <domain>/v1/apps/<uuid> or <domain>/v1/schedulers/<uuid>/deploy
+uuid_pattern="[[:xdigit:]]{32}"
+if [[ ${URL//-/} =~ \/v1\/apps\/$uuid_pattern$ ]]; then 
+    _log info "COPS API URL [${URL}] is valid with expected format [http?://<domain>/v1/apps/<uuid>]"
+elif [[ ${URL//-/} =~ \/v1\/schedulers\/$uuid_pattern\/deploy$ ]]; then
+    _log erro "COPS API URL [${URL}] is valid with expected format [http?://<domain>/v1/schedulers/<uuid>/deploy]"
+else
+    _log erro "COPS API URL [${URL}] is NOT valid with expected format [http?://<domain>/v1/apps/<uuid>] or [http?://<domain>/v1/schedulers/<uuid>/deploy]" && exit 1
 fi
 
 # Check timeout before start
@@ -87,5 +92,3 @@ else
 fi
 
 deploy && wait
-
-
