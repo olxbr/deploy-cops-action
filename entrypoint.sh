@@ -49,7 +49,7 @@ function deploy() {
 }
 
 function wait() {
-    if [[ ${URL//-/} =~ \/v1\/schedulers\/$uuid_pattern\/deploy$ ]]
+    if [[ ${URL//-/} =~ \/v1\/schedulers\/$uuid_pattern\/deploy$ ]]; then
         _log warn "The wait feature is not supported in scheduler deployments at this time!"
     else
         _log info "Waiting $IMAGE to finish deploy in $URL..."
