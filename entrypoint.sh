@@ -49,8 +49,12 @@ function deploy() {
 }
 
 function wait() {
-    _log info "Waiting $IMAGE to finish deploy in $URL..."
-    pip install requests==2.25.1 && python $WAIT_PATH/wait.py $IMAGE $URL $TIMEOUT
+    if [[ ${URL//-/} =~ \/v1\/schedulers\/$uuid_pattern\/deploy$ ]]
+        _log warn "The wait feature is not supported in scheduler deployments at this time!"
+    else
+        _log info "Waiting $IMAGE to finish deploy in $URL..."
+        pip install requests==2.25.1 && python $WAIT_PATH/wait.py $IMAGE $URL $TIMEOUT
+    fi
 }
 
 
