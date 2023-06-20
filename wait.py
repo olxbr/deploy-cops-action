@@ -44,6 +44,7 @@ def get_images_by_app(api_prefix, app_uuid, correct_image):
 
 def deploy_finished(api_prefix, app_id, correct_image):
     images = get_images_by_app(api_prefix, app_id, correct_image)
+    print(f" - images: {images}", flush=True)
     counted = Counter(images)
     return len(counted) == 1 and counted.get(correct_image) is not None
 
@@ -71,9 +72,12 @@ if __name__ == "__main__":
     cops_url = sys.argv[2]
     timeout = int(sys.argv[3])
 
-    splitted = cops_url.split("/apps/")
-    app_uuid = splitted[-1]
-    api_prefix = splitted[0]
+    ## Samples
+    # * api.cops.preprod.olxbr.cloud/v1/apps/40ceff80-903d-4b55-9839-d3b75ded2ee7
+    # * api.cops.preprod.olxbr.cloud/v1/schedulers/40ceff80-903d-4b55-9839-d3b75ded2ee7/deploy
+    splitted = cops_url.split("/")
+    app_uuid = splitted[3]
+    api_prefix = '/'.join(splitted[0:2])
 
     print(f"Waiting deploy to finish", flush=True)
     print(f" - api_prefix: {api_prefix}", flush=True)
