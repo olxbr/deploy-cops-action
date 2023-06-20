@@ -1,3 +1,4 @@
+import re
 import sys
 import requests
 import json
@@ -75,9 +76,9 @@ if __name__ == "__main__":
     ## Samples
     # * api.cops.preprod.olxbr.cloud/v1/apps/40ceff80-903d-4b55-9839-d3b75ded2ee7
     # * api.cops.preprod.olxbr.cloud/v1/schedulers/40ceff80-903d-4b55-9839-d3b75ded2ee7/deploy
-    splitted = cops_url.split("/")
-    app_uuid = splitted[3]
-    api_prefix = '/'.join(splitted[0:2])
+    splitted = re.split(r'/(apps|schedulers)/',cops_url)
+    app_uuid = splitted[-1].split('/')[0]
+    api_prefix = splitted[0]
 
     print(f"Waiting deploy to finish", flush=True)
     print(f" - api_prefix: {api_prefix}", flush=True)
