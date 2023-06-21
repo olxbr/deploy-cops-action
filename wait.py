@@ -42,6 +42,11 @@ def get_images_by_app(api_prefix, app_uuid, correct_image):
         result += get_images_by_instance(api_prefix, instance_uuid, correct_image)
     return result
 
+def get_images_by_schedulers(api_prefix, app_uuid, correct_image):
+    result = []
+    for instance_uuid in get_instances(api_prefix, app_uuid):
+        result += get_images_by_instance(api_prefix, instance_uuid, correct_image)
+    return result
 
 def deploy_finished(api_prefix, app_id, correct_image):
     images = get_images_by_app(api_prefix, app_id, correct_image)
