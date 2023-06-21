@@ -44,7 +44,7 @@ def get_images_by_app(api_prefix, app_uuid, correct_image):
 
 def get_images_by_schedulers(api_prefix, app_uuid, correct_image):
     result = []
-    response = requests.get(f"{api_prefix}/schedulers/{instance_uuid}",
+    response = requests.get(f"{api_prefix}/schedulers/{app_uuid}",
                             headers={"accept": "application/json"})
     result = json.loads(response.content)
     print(f" - result: {result}", flush=True)
