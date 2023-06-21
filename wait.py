@@ -27,6 +27,8 @@ def get_images_by_instance(api_prefix, instance_uuid, correct_image):
             status = json.dumps(c['status'], indent=2)
             status = status.replace('\"','').replace('  ',' - ').replace('{',' === STATUS ===')[:-1]
             if c["image"] == correct_image:
+                print(f" - ready: {c['ready']}", flush=True)
+                print(f" - restarts: {c['restarts']}", flush=True)
                 print(status, flush=True)
                 if c.get("status").get("reason") is not None and "BackOff" in c["status"]["reason"] and spent > 60:
                     print(f"ERROR - Found any type of 'BackOff' on deploy. Check the logs on COPS interface.", flush=True)
