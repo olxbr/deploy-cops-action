@@ -53,16 +53,16 @@ def get_images_by_schedulers(api_prefix, app_uuid, correct_image):
     return result
 
 
-def deploy_finished(api_prefix, app_id, correct_image, type_deploy):
-    images = get_images_by_app(api_prefix, app_id, correct_image) if type_deploy == 'apps' else get_images_by_schedulers(api_prefix, app_id, correct_image)
+def deploy_finished(api_prefix, app_id, correct_image, deploy_type):
+    images = get_images_by_app(api_prefix, app_id, correct_image) if deploy_type == 'apps' else get_images_by_schedulers(api_prefix, app_id, correct_image)
     counted = Counter(images)
     return len(counted) == 1 and counted.get(correct_image) is not None
 
 
-def wait_deploy_finished(api_prefix, app_uuid, correct_image, timeout, type_deploy):
+def wait_deploy_finished(api_prefix, app_uuid, correct_image, timeout, deploy_type):
     while True:
         try:
-            if deploy_finished(api_prefix, app_uuid, correct_image, type_deploy):
+            if deploy_finished(api_prefix, app_uuid, correct_image, deploy_type):
                 return True
         except Exception as e:
             traceback.print_exc()
@@ -88,13 +88,13 @@ if __name__ == "__main__":
     splitted = re.split(r'/(apps|schedulers)/',cops_url)
     app_uuid = splitted[-1].split('/')[0]
     api_prefix = splitted[0]
-    type_deploy = cops_url.split('/')[4]
+    deploy_type = cops_url.split('/')[4]
 
     print(f"Waiting deploy to finish", flush=True)
     print(f" - api_prefix: {api_prefix}", flush=True)
     print(f" - app_uuid: {app_uuid}", flush=True)
     print(f" - timeout: {timeout} seconds", flush=True)
     print(f" - correct_image: {correct_image}", flush=True)
-    print(f" - type_deploy: {type_deploy}", flush=True)
+    print(f" - deploy_type: {deploy_type}", flush=True)
 
-    wait_deploy_finished(api_prefix, app_uuid, correct_image, timeout, type_deploy)
+    wait_deploy_finished(api_prefix, app_uuid, correct_image, timeout, deploy_type)
