@@ -61,7 +61,7 @@ def deploy_finished(api_prefix, app_id, correct_image, type_url):
 def wait_deploy_finished(api_prefix, app_uuid, correct_image, timeout, type_url):
     while True:
         try:
-            if deploy_finished(api_prefix, app_uuid, correct_image):
+            if deploy_finished(api_prefix, app_uuid, correct_image, type_url):
                 return True
         except Exception as e:
             traceback.print_exc()
