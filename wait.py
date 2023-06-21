@@ -48,13 +48,11 @@ def get_images_by_schedulers(api_prefix, app_uuid, correct_image):
                             headers={"accept": "application/json"})
     res_json = json.loads(response.content)
     result.append(res_json['deploy']['containers'][0]['image']['address'])
-    print(f" - result: {result}", flush=True)
     return result
 
 
 def deploy_finished(api_prefix, app_id, correct_image, type_url):
     images = get_images_by_app(api_prefix, app_id, correct_image) if type_url == 'apps' else get_images_by_schedulers(api_prefix, app_id, correct_image)
-    print(f" - images: {images}", flush=True)
     counted = Counter(images)
     return len(counted) == 1 and counted.get(correct_image) is not None
 
@@ -83,8 +81,8 @@ if __name__ == "__main__":
     timeout = int(sys.argv[3])
 
     ## Samples
-    # * api.cops.preprod.olxbr.cloud/v1/apps/40ceff80-903d-4b55-9839-d3b75ded2ee7
-    # * api.cops.preprod.olxbr.cloud/v1/schedulers/40ceff80-903d-4b55-9839-d3b75ded2ee7/deploy
+    # * $domain/v1/apps/$uuid
+    # * $domain/v1/schedulers/$uuid/deploy
     splitted = re.split(r'/(apps|schedulers)/',cops_url)
     app_uuid = splitted[-1].split('/')[0]
     api_prefix = splitted[0]
