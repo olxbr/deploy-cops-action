@@ -85,7 +85,7 @@ if __name__ == "__main__":
     ## Samples
     # * $domain/v1/apps/$uuid
     # * $domain/v1/schedulers/$uuid/deploy
-    index_deploy_type = 4 if search(r'https?://', cops_url) else 2
+    index_deploy_type = 4 if re.search(r'https?://', cops_url) else 2
     splitted = re.split(r'/(apps|schedulers)/',cops_url)
     app_uuid = splitted[-1].split('/')[0]
     api_prefix = splitted[0]
