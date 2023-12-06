@@ -9,11 +9,10 @@ from datetime import datetime
 
 before = datetime.timestamp(datetime.now())
 
-def get_instances(api_prefix, app_uuid):
+def get_app(api_prefix, app_uuid):
     response = requests.get(f"{api_prefix}/apps/{app_uuid}",
                             headers={"accept": "application/json"})
-    result = json.loads(response.content)
-    return [i["uuid"] for i in result["instances"]]
+    return json.loads(response.content)
 
 
 def get_images_by_instance(api_prefix, instance_uuid, correct_image):
@@ -40,8 +39,15 @@ def get_images_by_instance(api_prefix, instance_uuid, correct_image):
 
 def get_images_by_app(api_prefix, app_uuid, correct_image):
     result = []
-    for instance_uuid in get_instances(api_prefix, app_uuid):
-        result += get_images_by_instance(api_prefix, instance_uuid, correct_image)
+    app = get_app(api_prefix, app_uuid)
+
+    if app["deploy"]["type"] == "scheduler":
+        result.append(app["deploy"]["containers"][0]["image"]["address"])
+    else:
+        instances = [i["uuid"] for i in app["instances"]]
+        for instance_uuid in instances:
+            result += get_images_by_instance(api_prefix, instance_uuid, correct_image)
+
     return result
 
 def get_images_by_schedulers(api_prefix, app_uuid, correct_image):
