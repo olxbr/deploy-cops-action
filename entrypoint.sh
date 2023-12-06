@@ -50,7 +50,13 @@ function deploy() {
 
 function wait() {
     _log info "Waiting $IMAGE to finish deploy in $URL..."
-    pip install requests==2.25.1 && python $WAIT_PATH/wait.py $IMAGE $URL $TIMEOUT
+    if ! pip install requests==2.25.1 > pip.log 2>&1; then
+        _log erro "Pip install failed!"
+        cat pip.log
+        exit 1
+    fi
+    rm -f pip.log
+    python $WAIT_PATH/wait.py $IMAGE $URL $TIMEOUT
 }
 
 
