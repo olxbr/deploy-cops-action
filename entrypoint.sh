@@ -8,6 +8,7 @@ C_RESET=$ESC_SEQ"39;49;00m"
 C_BOLD=$ESC_SEQ"39;49;01m"
 C_RED=$ESC_SEQ"31;01m"
 C_YEL=$ESC_SEQ"33;01m"
+C_BLU=$ESC_SEQ"36;01m"
 
 function _log() {
     case $1 in
@@ -37,7 +38,7 @@ function deploy() {
             _log erro "Maybe a problem with COPS or REPOSITORY"
             RET_DEPLOY=1
         fi
-        _log info "Response body was [$(cat ${CURL_BODY_FILE})]"
+        _log info "Response body was [${C_BLU}$(cat ${CURL_BODY_FILE})${C_RESET}]"
     else
         _log erro "Can't execute CURL to deploy image ${IMAGE} to COPS [$URL]"
         RET_DEPLOY=1
