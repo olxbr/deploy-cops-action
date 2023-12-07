@@ -43,6 +43,7 @@ def get_images_by_app(api_prefix, app_uuid, correct_image):
 
     if app["deploy"]["type"] == "scheduler":
         result.append(app["deploy"]["containers"][0]["image"]["address"])
+        print(f" - deploy_type: actually [{app["deploy"]["type"]}] - No need to wait", flush=True)
     else:
         instances = [i["uuid"] for i in app["instances"]]
         for instance_uuid in instances:
