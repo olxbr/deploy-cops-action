@@ -25,7 +25,7 @@ function deploy() {
     CURL_BODY_FILE=$(mktemp)
     CURL_HEADERS_FILE=$(mktemp)
     _log info "Deploying $IMAGE image to COPS $URL..."
-    if CURL_RESPONSE=$(curl -v -s --max-time 20 -X PATCH -H 'Content-Type: application/json' --url "$URL" -d "{\"image\": \"$IMAGE\"}" --write-out '%{http_code}' -o ${CURL_BODY_FILE} 2> >(grep -v '* Expire in' 1> ${CURL_HEADERS_FILE})); then
+    if CURL_RESPONSE=$(curl -L -v -s --max-time 20 -X PATCH -H 'Content-Type: application/json' --url "$URL" -d "{\"image\": \"$IMAGE\"}" --write-out '%{http_code}' -o ${CURL_BODY_FILE} 2> >(grep -v '* Expire in' 1> ${CURL_HEADERS_FILE})); then
         if grep -q '^2..' <<< ${CURL_RESPONSE}; then
             _log info "Valid response from COPS status_code:[${CURL_RESPONSE}]"
         elif grep -q '^4..' <<< ${CURL_RESPONSE}; then
