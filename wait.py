@@ -22,6 +22,9 @@ def get_images_by_instance(api_prefix, instance_uuid, correct_image):
     spent = datetime.timestamp(datetime.now()) - before
     images = []
     for r in result:
+        if r.get("containers") is None:
+            print(f"WARN - No containers found on instance {instance_uuid} - {r}", flush=True)
+            continue
         for c in r["containers"]:
             status = json.dumps(c['status'], indent=2)
             status = status.replace('\"','').replace('  ',' - ').replace('{',' === STATUS ===')[:-1]
