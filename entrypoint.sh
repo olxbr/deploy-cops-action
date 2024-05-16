@@ -67,10 +67,10 @@ function wait() {
 
 # Check if cops API URL is on format: <domain>/v1/apps/<uuid> or <domain>/v1/schedulers/<uuid>/deploy
 uuid_pattern="[[:xdigit:]]{32}"
-if [[ ${URL//-/} =~ \/v1\/apps\/$uuid_pattern$ ]]; then 
-    _log info "COPS API URL [${URL}] is valid with expected format [https?://<domain>/v1/apps/<uuid>]"
-elif [[ ${URL//-/} =~ \/v1\/schedulers\/$uuid_pattern\/deploy$ ]]; then
-    _log info "COPS API URL [${URL}] is valid with expected format [https?://<domain>/v1/schedulers/<uuid>/deploy]"
+if [[ ${URL//-/} =~  https?:\/\/api\..*\/v1\/apps\/$uuid_pattern$ ]]; then 
+    _log info "COPS API URL [${URL}] is valid with expected format [https?://api.<domain>/v1/apps/<uuid>]"
+elif [[ ${URL//-/} =~ https?:\/\/api\..*\/v1\/schedulers\/$uuid_pattern\/deploy$ ]]; then
+    _log info "COPS API URL [${URL}] is valid with expected format [https?://api.<domain>/v1/schedulers/<uuid>/deploy]"
 else
     _log erro "COPS API URL [${URL}] is NOT valid with expected format [https?://<domain>/v1/apps/<uuid>] or [https?://<domain>/v1/schedulers/<uuid>/deploy]" && exit 1
 fi
